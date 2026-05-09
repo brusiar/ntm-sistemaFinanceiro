@@ -1,0 +1,83 @@
+version: '3.9'
+
+services:
+  # ============================================================
+  # PostgreSQL
+  # ============================================================
+  postgres:
+    image: postgres:16-alpine
+    container_name: ntm-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ntm_financeiro
+      POSTGRES_USER: ntm
+      POSTGRES_PASSWORD: ntm123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - ntm-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ntm -d ntm_financeiro"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ============================================================
+  # Backend Spring Boot
+  # ============================================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: ntm-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: local
+      DB_URL: jdbc:postgresql://postgres:5432/ntm_financeiro
+      DB_USERNAME: ntm
+      DB_PASSWORD: ntm123
+      JWT_SECRET: ntm-financeiro-super-secret-key-2024-change-in-production
+      JWT_EXPIRATION: 86400000
+      SERVER_PORT: 8080
+    ports:
+      - "8080:8080"
+    networks:
+      - ntm-network
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
+      retries: 3
+
+  # ============================================================
+  # Frontend Next.js
+  # ============================================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ntm-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8080
+    ports:
+      - "3000:3000"
+    networks:
+      - ntm-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  ntm-network:
+    driver: bridge
