@@ -23,7 +23,7 @@ INSERT INTO users (id, unit_id, name, email, password, active, portal_type) VALU
      '00000000-0000-0000-0000-000000000001',
      'Administrador',
      'admin@ntm.com.br',
-     '$2a$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2uheWG/igi.',
+     '$2a$12$1wfUOUsqIHbZc747wpHz/uTXHIE.zSQcdRYivrSrmTT4pg4/uRKpy',
      TRUE,
      'ADMIN');
 
