@@ -129,10 +129,7 @@ export default function LoginPage() {
                 <input
                   type="email"
                   placeholder="seu@email.com.br"
-                  className="w-full h-11 pl-10 pr-4 rounded-lg border border-gray-300 bg-white text-sm text-ink placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:border-transparent transition"
-                  style={{ '--tw-ring-color': '#F25C3B' } as React.CSSProperties}
-                  onFocus={(e) => e.currentTarget.style.boxShadow = '0 0 0 2px #F25C3B'}
-                  onBlur={(e) => e.currentTarget.style.boxShadow = ''}
+                  className="w-full h-11 pl-10 pr-4 rounded-lg border border-gray-300 bg-white text-sm text-ink placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition"
                   {...register('email')}
                 />
               </div>
@@ -147,9 +144,7 @@ export default function LoginPage() {
                 <input
                   type="password"
                   placeholder="••••••••"
-                  className="w-full h-11 pl-10 pr-4 rounded-lg border border-gray-300 bg-white text-sm text-ink placeholder:text-gray-400 focus:outline-none transition"
-                  onFocus={(e) => e.currentTarget.style.boxShadow = '0 0 0 2px #F25C3B'}
-                  onBlur={(e) => e.currentTarget.style.boxShadow = ''}
+                  className="w-full h-11 pl-10 pr-4 rounded-lg border border-gray-300 bg-white text-sm text-ink placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition"
                   {...register('password')}
                 />
               </div>
